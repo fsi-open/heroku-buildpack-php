@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Build Path: /app/.heroku/php/
+# Build Deps: php-7.2.14
+
+dep_name=timecop
+dep_version=1.2.10
+
+OUT_PREFIX=$1
+export PATH=${OUT_PREFIX}/bin:${PATH}
+
+MANIFEST_EXTRA="${MANIFEST_EXTRA:-"{\"config\":\"etc/php/conf.d/timecop.ini-dist\"}"}"
+
+source $(dirname $BASH_SOURCE)/../pecl
+
+mkdir -p ${OUT_PREFIX}/etc/php/conf.d
+cat > ${OUT_PREFIX}/etc/php/conf.d/timecop.ini-dist <<'EOF'
+extension = timecop.so
+EOF

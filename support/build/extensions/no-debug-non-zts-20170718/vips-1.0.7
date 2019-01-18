@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Build Path: /app/.heroku/php/
+# Build Deps: php-7.2.14
+
+dep_name=vips
+dep_version=1.0.7
+
+OUT_PREFIX=$1
+export PATH=${OUT_PREFIX}/bin:${PATH}
+
+apt-get update
+apt-get install -q -y libvips42 libvips-dev
+
+MANIFEST_EXTRA="${MANIFEST_EXTRA:-"{\"config\":\"etc/php/conf.d/vips.ini-dist\"}"}"
+
+source $(dirname $BASH_SOURCE)/../pecl
+
+mkdir -p ${OUT_PREFIX}/etc/php/conf.d
+cat > ${OUT_PREFIX}/etc/php/conf.d/vips.ini-dist <<'EOF'
+extension = vips.so
+EOF
+
