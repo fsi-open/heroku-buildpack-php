@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build Path: /app/.heroku/php/
-# Build Deps: php-7.2.14
+# Build Deps: php-7.2.14 libraries/libvips-8.7.3
 
 dep_name=vips
 dep_version=1.0.7
@@ -8,10 +8,9 @@ dep_version=1.0.7
 OUT_PREFIX=$1
 export PATH=${OUT_PREFIX}/bin:${PATH}
 
-apt-get update
-apt-get install -q -y libvips42 libvips-dev
-
+MANIFEST_REQUIRE="${MANIFEST_REQUIRE:-"{\"heroku-sys/libvips\":\"^8.5.0\",\"heroku-sys/libvips-abi\":\"^42\"}"}"
 MANIFEST_EXTRA="${MANIFEST_EXTRA:-"{\"config\":\"etc/php/conf.d/vips.ini-dist\"}"}"
+export PKG_CONFIG_PATH=${OUT_PREFIX}/lib/pkgconfig
 
 source $(dirname $BASH_SOURCE)/../pecl
 
